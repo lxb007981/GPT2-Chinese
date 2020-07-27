@@ -17,7 +17,7 @@ from tqdm import tqdm
 def build_files(raw_data_path, tokenized_data_path, full_tokenizer, num_pieces):
     with open(raw_data_path, 'r', encoding='utf8') as f:
         print('reading lines')
-        lines = json.load(f)
+        lines = json.load(f, strict=False)
         lines = [line.replace('\n', ' [SEP] ') for line in lines]  # 用[SEP]表示换行, 段落之间使用SEP表示段落结束
     single = ''.join(lines)
     len_single = len(single)
@@ -74,7 +74,7 @@ def main():
 
     n_ctx = model_config.n_ctx
     full_tokenizer = tokenization_bert.BertTokenizer(vocab_file=args.tokenizer_path)
-    full_tokenizer.max_len = 999999
+    # full_tokenizer.max_len = 999999
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print('using device:', device)
 
